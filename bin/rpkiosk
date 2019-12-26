@@ -1,0 +1,33 @@
+#!/bin/bash -x
+ 
+openbox-session &
+ 
+xset s 0 0
+xset -dpms
+ 
+xset dpms force off
+ 
+export DISPLAY
+
+pulseaudio &
+
+sleep 1
+
+for i in Master PCM ; do
+	amixer set $i 50%
+	amixer set $i unmute
+done
+
+if [ ! -d $HOME/RetroPie-Setup ]; then
+	/usr/bin/xterm -maximize -e /bin/bash -l -c "git -C $HOME clone https://github.com/RetroPie/RetroPie-Setup"
+fi
+
+if [ ! -f /usr/bin/emulationstation ]; then
+	/usr/bin/xterm -maximize -e /bin/bash -x -l -c "cd $HOME/RetroPie-Setup ; sudo ./retropie_setup.sh ; read -p x"
+fi
+
+if [ ! -f /usr/bin/emulationstation ]; then
+	/usr/bin/xterm -maximize -e /bin/bash -l -c /usr/bin/emulationstation
+else
+	/usr/bin/xterm -maximize -e /bin/bash -l -c "read -t 10 -p 'EmulationStation not intstalled, exiting in 10 seconds.'"
+fi
