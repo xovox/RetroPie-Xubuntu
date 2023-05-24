@@ -24,6 +24,15 @@ supported until 2025
 
 Clone this repository & run the script
 
+```
+git -C $HOME clone https://github.com/xovox/RetroPie-Xubuntu/
+cd $HOME/RetroPie-Xubuntu
+chmod +x retropie_xubuntu
+./retropie_xubuntu
+```
+
+The script will perform the following
+
 * Disable desktop compositing
 * Disable screen power-down
 * Power button now shuts down the system immediately
@@ -37,13 +46,6 @@ Clone this repository & run the script
 * Install Intellivision, Neo Geo CD, MSX emulators
 * Install scraper
 * Enable auto-start
-
-```
-git -C $HOME clone https://github.com/xovox/RetroPie-Xubuntu/
-cd $HOME/RetroPie-Xubuntu
-chmod +x retropie_xubuntu
-./retropie_xubuntu
-```
 
 ## Disabling Auto-Start
 
