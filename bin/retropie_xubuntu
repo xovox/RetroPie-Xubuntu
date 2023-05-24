@@ -1,0 +1,125 @@
+#!/bin/bash -e
+
+##############################################################################
+###
+### xubuntu_retropie - automatic install & optimization of xubuntu for retropie
+###
+##############################################################################
+
+sudocfg="$USER ALL=(ALL) NOPASSWD:ALL"
+sudofile="/etc/sudoers.d/retropie-$USER"
+
+retropie_git="https://github.com/retropie/RetroPie-Setup"
+
+retropie_remove="
+lr-mame2003
+mupen64plus
+"
+
+retropie_install="
+lr-bluemsx
+lr-freeintv
+lr-mame2003-plus
+lr-mupen64plus
+lr-neocd
+scraper
+"
+
+required_packages="
+ffmpeg
+git
+"
+
+##############################################################################
+# xfce4 configuration settings
+##############################################################################
+
+declare -A xfwm4=(
+[theme]='Greybird-compact'
+[use_compositing]='false'
+)
+
+declare -A xfce4_power_manager=(
+[power-button-action]=4
+[blank-on-ac]=0
+[lock-screen-suspend-hibernate]=false
+[dpms-enabled]=false
+[dpms-on-ac-sleep]=0
+[dpms-on-ac-off]=0
+)
+
+##############################################################################
+# upgrade os & install requirements
+##############################################################################
+
+sudo apt update
+sudo apt -y dist-upgrade
+sudo apt -y install $required_packages
+
+##############################################################################
+# configure xfce4
+##############################################################################
+
+for setting in "${!xfwm4[@]}"; do
+	xfconf-query -v -c xfwm4 -p /general/$setting -s ${xfwm4[$setting]}
+done
+
+for setting in "${!xfce4_power_manager[@]}"; do
+	xfconf-query -v -c xfce4-power-manager -p /xfce4-power-manager/$setting -s ${xfce4_power_manager[$setting]}
+done
+
+##############################################################################
+# configure sudo
+##############################################################################
+
+echo "$sudocfg" | sudo tee $sudofile
+chmod -c 0400 $sudofile
+
+##############################################################################
+# clone and build retropie
+##############################################################################
+
+git -C $HOME clone $retropie_git
+
+cd $HOME/RetroPie-Setup
+
+sudo ./retropie_packages.sh setup basic_install
+
+##############################################################################
+# remove unfriendly/outdated packages
+##############################################################################
+
+for retropie_package in $retropie_remove ; do
+	sudo ./retropie_packages.sh $retropie_package remove
+done
+
+##############################################################################
+# install additional emulators
+##############################################################################
+
+for retropie_package in $retropie_install ; do
+	for act in depends sources build install configure ; do
+		sudo ./retropie_packages.sh $retropie_package $act
+	done
+done
+
+##############################################################################
+# auto start emulationstation
+##############################################################################
+
+cat << EOF > $HOME/.config/autostart/retropie.desktop
+[Desktop Entry]
+Type=Application
+Exec=xfce4-terminal --fullscreen --hide-menubar --hide-borders --hide-toolbar --hide-scrollbar --color-text "#808080" --command emulationstation
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=RetroPie
+Comment=retropie
+Icon=/usr/local/share/icons/retropie.svg
+Categories=Game
+EOF
+
+exit
+
+#./retropie_packages.sh esthemes install_theme RetroCRT-240p xovox
