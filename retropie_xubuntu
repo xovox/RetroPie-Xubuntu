@@ -2,7 +2,9 @@
 
 ##############################################################################
 ###
-### xubuntu_retropie - automatic install & optimization of xubuntu for retropie
+### xubuntu_retropie (c)2023 xovox - https://github.com/xovox/RetroPie-xubuntu
+###
+### 
 ###
 ##############################################################################
 
@@ -12,22 +14,22 @@ sudofile="/etc/sudoers.d/retropie-$USER"
 retropie_git="https://github.com/retropie/RetroPie-Setup"
 
 retropie_remove="
-lr-mame2003
-mupen64plus
+	lr-mame2003
+	mupen64plus
 "
 
 retropie_install="
-lr-bluemsx
-lr-freeintv
-lr-mame2003-plus
-lr-mupen64plus
-lr-neocd
-scraper
+	lr-bluemsx
+	lr-freeintv
+	lr-mame2003-plus
+	lr-mupen64plus
+	lr-neocd
+	scraper
 "
 
 required_packages="
-ffmpeg
-git
+	ffmpeg
+	git
 "
 
 ##############################################################################
@@ -35,17 +37,17 @@ git
 ##############################################################################
 
 declare -A xfwm4=(
-[theme]='Greybird-compact'
-[use_compositing]='false'
+	[theme]="Greybird-compact"
+	[use_compositing]="false"
 )
 
 declare -A xfce4_power_manager=(
-[power-button-action]=4
-[blank-on-ac]=0
-[lock-screen-suspend-hibernate]=false
-[dpms-enabled]=false
-[dpms-on-ac-sleep]=0
-[dpms-on-ac-off]=0
+	[power-button-action]="4"
+	[blank-on-ac]="0"
+	[lock-screen-suspend-hibernate]="false"
+	[dpms-enabled]="false"
+	[dpms-on-ac-sleep]="0"
+	[dpms-on-ac-off]="0"
 )
 
 ##############################################################################

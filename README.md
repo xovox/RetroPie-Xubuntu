@@ -1,12 +1,11 @@
 # RetroPie-Xubuntu
 
-This is my attempt at making a clean & easy way to take a vanilla Xubuntu
-installation and create a dedicated RetroPie system.  The goal is to make
-this as close to the standard RetroPie install on a Raspberry Pi as
-possible
+This is my attempt at making a clean & easy way to take a vanilla Xubuntu installation and create a dedicated RetroPie system.
+The goal is to make this as close to the standard RetroPie install on a Raspberry Pi as possible.
 
 # Why Xubuntu?
 
+* Official alternate for Ubuntu's standard desktop
 * Incredibly light-weight
 * Very straight-forward UI
 * Easy to customize with built-in tools
@@ -15,8 +14,7 @@ possible
 
 ## Installing Xubuntu
 
-* Download & install [Xubuntu 22.04 LTS](https://xubuntu.org/download/) which will be
-supported until 2025
+* Download & install [Xubuntu 22.04 LTS](https://cdimage.ubuntu.com/xubuntu/releases/focal/release/) which will be supported until 2025
   * During the installation, ensure you set to have your user automatically log-in
   * Choose whatever username you'd like, my configuration script isn't dependent on the '''pi''' username
 
@@ -48,6 +46,8 @@ The script will perform the following
 * Enable auto-start
 
 ## Disabling Auto-Start
+
+Open up a terminal and run the following
 
 ```
 rm $HOME/.config/autostart/retropie.desktop
