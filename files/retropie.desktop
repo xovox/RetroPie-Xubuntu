@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=xfce4-terminal --fullscreen --hide-menubar --hide-borders --hide-toolbar --hide-scrollbar --color-text "#808080" --command $HOME/bin/start_es
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=RetroPie
+Comment=retropie
+Icon=/usr/local/share/icons/retropie.svg
+Categories=Game

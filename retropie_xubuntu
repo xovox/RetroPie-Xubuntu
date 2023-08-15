@@ -10,6 +10,7 @@
 
 sudocfg="$USER ALL=(ALL) NOPASSWD:ALL"
 sudofile="/etc/sudoers.d/retropie-$USER"
+autostartdir="$HOME/.config/autostart"
 
 retropie_git="https://github.com/retropie/RetroPie-Setup"
 
@@ -38,7 +39,6 @@ required_packages="
 
 declare -A xfwm4=(
 	[theme]="Greybird-compact"
-	[use_compositing]="false"
 )
 
 declare -A xfce4_power_manager=(
@@ -49,6 +49,15 @@ declare -A xfce4_power_manager=(
 	[dpms-on-ac-sleep]="0"
 	[dpms-on-ac-off]="0"
 )
+
+declare -A xfce4_screensaver=(
+	[/lock/enabled]="false"
+	[/lock/saver-activation/enabled]="false"
+	[/saver/enabled]="false"
+	[/saver/idle-activation/enabled]="false"
+	[/saver/mode]="0"
+)
+
 
 ##############################################################################
 # upgrade os & install requirements
@@ -70,12 +79,16 @@ for setting in "${!xfce4_power_manager[@]}"; do
 	xfconf-query -v -c xfce4-power-manager -p /xfce4-power-manager/$setting -s ${xfce4_power_manager[$setting]}
 done
 
+for setting in "${!xfce4_screensaver[@]}"; do
+	xfconf-query -v -c xfce4-screensaver -p $setting -s ${xfce4_screensaver[$setting]}
+done
+
 ##############################################################################
 # configure sudo
 ##############################################################################
 
 echo "$sudocfg" | sudo tee $sudofile
-chmod -c 0400 $sudofile
+sudo chmod -c 0400 $sudofile
 
 ##############################################################################
 # clone and build retropie
@@ -109,18 +122,15 @@ done
 # auto start emulationstation
 ##############################################################################
 
-cat << EOF > $HOME/.config/autostart/retropie.desktop
-[Desktop Entry]
-Type=Application
-Exec=xfce4-terminal --fullscreen --hide-menubar --hide-borders --hide-toolbar --hide-scrollbar --color-text "#808080" --command emulationstation
-Hidden=false
-NoDisplay=false
-X-GNOME-Autostart-enabled=true
-Name=RetroPie
-Comment=retropie
-Icon=/usr/local/share/icons/retropie.svg
-Categories=Game
-EOF
+mkdir -pv \
+	$HOME/bin \
+	$autostartdir
+
+cp -v files/es_start $HOME/bin/
+cp -v files/retropie.desktop $autostartdir/
+cp -v files/retropie.desktop $HOME/Desktop/
+
+chmod +x $HOME/bin/es_start
 
 exit
 

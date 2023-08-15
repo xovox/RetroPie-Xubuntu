@@ -1,0 +1,14 @@
+#!/bin/bash
+
+##############################################################################
+# start_es (c) 2023 xovox (http://github.com/xovox/retropie-xubuntu
+#
+# this very simple script disables/enables compositing for a smoother
+# emulation experience
+##############################################################################
+
+unclutter --idle .5 &
+xfconf-query -v -c xfwm4 -p /general/use_compositing -s false
+emulationstation
+xfconf-query -v -c xfwm4 -p /general/use_compositing -s true
+killall unclutter
